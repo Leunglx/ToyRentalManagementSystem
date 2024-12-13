@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // as是别名
-      models.Chapter.belongsTo(models.Clerk, { as: 'clerk' })
+      models.Work.belongsTo(models.Clerk, { as: 'clerk' })
     }
   }
   Work.init({

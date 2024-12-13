@@ -15,7 +15,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Toy.init({
-    tid: DataTypes.INTEGER,
+    tname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: '玩具名必须存在。' },
+        notEmpty: { msg: '玩具名不能为空。' },
+        len: { args: [2,20], msg: '玩具名长度需要在2~20个字符之间。' }
+      }
+    },
     price: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -45,13 +53,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: { msg: '出租状态必须存在（0:未出租，1:已出租）。' },
-        notEmpty: { msg: '出租状态不能为空（0:未出租，1:已出租）。' }
+        notEmpty: { msg: '出租状态不能为空（0:未出租，1:已出租）。' },
+        isIn: { args: [[0, 1]], msg: '值必须是，未出租：0  已出租：1' }
       }
     },
     damageCondition: {
       type: DataTypes.TEXT,
       validate: {
-        len: { args: [10,100], msg: '损坏情况描述需要在10~100个字符之间。' }
+        len: { args: [0,100], msg: '损坏情况描述需要在100个字符以下。' }
       }
     }
   }, {
