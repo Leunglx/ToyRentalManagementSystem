@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "666llx666",
-    "database": "ToyRentalManagementSystem_development",
+    "database": "ToyRentalManagementSystem",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "timezone": "+08:00"
