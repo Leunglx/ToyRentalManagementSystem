@@ -1,0 +1,42 @@
+* {
+    /* 清除元素默认内外边距 */
+    margin: 0;
+    padding: 0;
+    /* 内减模式 */
+    box-sizing: border-box;
+}
+
+/* 去除列表默认样式 */
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+/* 去除a标签默认下划线，并设置默认文字颜色 */
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+
+/* 设置img的垂直对齐方式为居中对齐，去除img默认下间隙 */
+
+img {
+    vertical-align: middle;
+}
+
+body {
+    margin: 0 auto;
+    background: no-repeat;
+    background-size: cover;
+    background-color: rgb(242, 243, 245);
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
