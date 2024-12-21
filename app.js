@@ -3,8 +3,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+// 前端路由文件
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// const usersRouter = require('./routes/users');
 
 // 后台路由文件
 const adminToysRouter = require('./routes/admin/toys')
@@ -21,8 +22,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 前端路由配置
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 
 // 后台路由配置
 app.use('/admin/toys', adminToysRouter)

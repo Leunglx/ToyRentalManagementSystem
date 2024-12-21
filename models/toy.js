@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const moment = require('moment/moment')
+
 module.exports = (sequelize, DataTypes) => {
   class Toy extends Model {
     /**
@@ -46,6 +48,9 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: { msg: '进货时间必须存在。' },
         notEmpty: { msg: '进货时间不能为空。' }
+      },
+      get() {
+        return moment(this.getDataValue('purchaseDate')).format('YYYY.MM.DD')
       }
     },
     isRented: {

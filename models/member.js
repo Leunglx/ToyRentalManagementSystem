@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const moment = require('moment/moment')
+
 module.exports = (sequelize, DataTypes) => {
   class Member extends Model {
     /**
@@ -40,6 +42,9 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: '注册会员时间必须存在。' },
         notEmpty: { msg: '注册会员时间不能为空。' },
         isDate: { msg: '日期格式不正确。' },
+      },
+      get() {
+        return moment(this.getDataValue('registerTime')).format('YYYY.MM.DD')
       }
     },
     deposit: DataTypes.INTEGER
