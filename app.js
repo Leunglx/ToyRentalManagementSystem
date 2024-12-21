@@ -8,6 +8,10 @@ const usersRouter = require('./routes/users');
 
 // 后台路由文件
 const adminToysRouter = require('./routes/admin/toys')
+const adminMembersRouter = require('./routes/admin/members')
+const adminClerksRouter = require('./routes/admin/clerks')
+const adminRentalListsRouter = require('./routes/admin/rentalLists')
+const adminWorksRouter = require('./routes/admin/works')
 
 const app = express();
 
@@ -22,5 +26,9 @@ app.use('/users', usersRouter);
 
 // 后台路由配置
 app.use('/admin/toys', adminToysRouter)
+app.use('/admin/members', adminMembersRouter)
+app.use('/admin/clerks', adminClerksRouter)
+app.use('/admin/rentalLists', adminRentalListsRouter)
+app.use('/admin/works', adminWorksRouter)
 
 module.exports = app;

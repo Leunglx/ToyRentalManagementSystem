@@ -5,35 +5,35 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Works', [
       {
-        cid: 1,
+        clerkId: 1,
         startTime: new Date(),
         endTime: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        cid: 2,
+        clerkId: 2,
         startTime: new Date(),
         endTime: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        cid: 3,
+        clerkId: 3,
         startTime: new Date(),
         endTime: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        cid: 4,
+        clerkId: 4,
         startTime: new Date(),
         endTime: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        cid: 5,
+        clerkId: 5,
         startTime: new Date(),
         endTime: new Date(),
         createdAt: new Date(),

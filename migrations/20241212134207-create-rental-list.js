@@ -9,15 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED
       },
-      tid: {
+      toyId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
-      mid: {
+      memberId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
-      cid: {
+      clerkId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false
       },
@@ -40,17 +40,17 @@ module.exports = {
     // index索引
     await queryInterface.addIndex(
       'RentalLists', {
-        fields: ['tid'], // 要索引的字段
+        fields: ['toyId'], // 要索引的字段
       }
     );
     await queryInterface.addIndex(
       'RentalLists', {
-        fields: ['mid'], // 要索引的字段
+        fields: ['memberId'], // 要索引的字段
       }
     );
     await queryInterface.addIndex(
       'RentalLists', {
-        fields: ['cid'], // 要索引的字段
+        fields: ['clerkId'], // 要索引的字段
       }
     );
   },

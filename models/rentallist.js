@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   RentalList.init({
-    tid: {
+    toyId: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    mid: {
+    memberId: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    cid: {
+    clerkId: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

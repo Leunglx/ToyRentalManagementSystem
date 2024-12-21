@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED
       },
-      cid: {
+      clerkId: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
       },
@@ -33,7 +33,7 @@ module.exports = {
     // index索引
     await queryInterface.addIndex(
       'Works', {
-        fields: ['cid'], // 要索引的字段
+        fields: ['clerkId'], // 要索引的字段
       }
     );
   },

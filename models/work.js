@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Work.init({
-    cid: {
+    clerkId: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
