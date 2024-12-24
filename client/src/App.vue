@@ -1,12 +1,11 @@
 <template>
-  <h1>测试</h1>
-  <HelloWorld msg="Hello Vue 3.0 + Vite" />
-  <el-button>Default</el-button>
-  <el-button type="danger" plain>Danger</el-button>
+  <!-- <HelloWorld msg="Hello Vue 3.0 + Vite" /> -->
+   <Main />
 </template>
 
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import Main from './components/main.vue'
 import { inject, onMounted } from 'vue';
 
 const $API = inject('$API');
