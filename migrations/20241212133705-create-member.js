@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      mtel: {
+      tel: {
         type: Sequelize.STRING
       },
       registerTime: {
