@@ -6,10 +6,10 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import Main from './components/main.vue'
-import { inject, onMounted } from 'vue';
+import { inject, onMounted } from 'vue'
 
-const $API = inject('$API');
-const $Tools = inject('$Tools');
+const $API = inject('$API')
+const $Tools = inject('$Tools')
 
 onMounted(async() => {
   // console.log('--',await $API.toy.getToyList('',1,10))

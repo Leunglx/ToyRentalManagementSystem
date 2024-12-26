@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: '玩具ID不能为空。' },
         async isPresent(value) {
           const toy = await sequelize.models.Toy.findByPk(value)
-          if (!toy) throw new Error(`ID为：${ value }的玩具不存在。`)
+          if (!toy) throw new Error(`ID为 ${ value } 的玩具不存在。`)
         }
       }
     },
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: '会员ID不能为空。' },
         async isPresent(value) {
           const member = await sequelize.models.Member.findByPk(value)
-          if (!member) throw new Error(`ID为：${ value }的会员不存在。`)
+          if (!member) throw new Error(`ID为 ${ value } 的会员不存在。`)
         }
       }
     },
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: '营业员ID不能为空。' },
         async isPresent(value) {
           const clerk = await sequelize.models.Clerk.findByPk(value)
-          if (!clerk) throw new Error(`ID为：${ value }的营业员不存在。`)
+          if (!clerk) throw new Error(`ID为 ${ value } 的营业员不存在。`)
         }
       }
     },

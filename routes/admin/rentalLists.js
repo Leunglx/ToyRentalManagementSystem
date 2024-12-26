@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 // 引入模型
-const { RentalList } = require('../../models')
+const { RentalList, Toy, Member } = require('../../models')
 const { Op } = require('sequelize')
 const {
   NotFoundError,
@@ -52,10 +52,9 @@ router.get('/',async function(req, res) {
         }
       }
     }
-
     // 数据在rows里
     const { count, rows } = await RentalList.findAndCountAll(condition)
-
+    
     success(res, '查询玩具出租列表成功。',{ 
       rentalLists: rows,
       pagenition: {
@@ -92,10 +91,30 @@ router.post('/', async function (req, res) {
     // 白名单过滤 防止用户在表单输入无关数据
     const body = filterBody(req)
 
-    const rentalList = await RentalList.create(body)
+    // 查询前端传的玩具、会员记录（判断是否存在已经在models里写过了）
+    const toy = await Toy.findByPk(body.toyId)
+    const member = await Member.findByPk(body.memberId)
+    let deposit = member.deposit
 
-    // 201表示成功的同时还创建了新资源
-    success(res, '创建玩具出租记录成功', { rentalList }, 201)
+    // 是否有id相同且未归还的玩具（就是查玩具被租了没有）
+    const rentedToy = await RentalList.findOne({
+      where: {
+        toyId: body.toyId,
+        returnDate: null
+      }
+    })
+    // 没找到这条记录 说明该玩具还没被租/上一次出租已完成
+    if (!rentedToy) {
+      const rentalList = await RentalList.create(body)
+      // 201表示成功的同时还创建了新资源
+      success(res, '创建玩具出租记录成功', { rentalList }, 201)
+      // 更新出租状态、押金
+      await Toy.update({ isRented: 1 }, { where: { id: body.toyId } })
+      deposit += toy.price
+      await Member.update({ deposit }, { where: { id: body.memberId } })
+    } else {
+      throw new Error(`ID为 ${ body.toyId } 的玩具已被出租。`)
+    }
   } catch (error) {
     failure(res,error)
   }
@@ -124,11 +143,29 @@ router.put('/:id',async function(req, res) {
     const rentalList = await getRentalList(req)
     // 白名单过滤 防止用户在表单输入无关数据
     const body = filterBody(req)
+
+    // 查询前端传的玩具、会员记录（判断是否存在已经在models里写过了）
+    const toy = await Toy.findByPk(body.toyId)
+    const member = await Member.findByPk(body.memberId)
+    let deposit = member.deposit
+
     await rentalList.update(body)
     res.json({ 
       status: true,
       message: '更新玩具出租记录成功。',
     })
+    // 玩具归还
+    if (body.returnDate != null) {
+      await Toy.update({ isRented: 0 }, { where: { id: body.toyId } })
+      deposit -= toy.price
+      await Member.update({ deposit }, { where: { id: body.memberId } })
+    }
+    // 有时候误改归还日期了 需要把isRented和deposit改回来（就是还是已出租的状态） 
+    else {
+      await Toy.update({ isRented: 1 }, { where: { id: body.toyId } })
+      deposit += toy.price
+      await Member.update({ deposit }, { where: { id: body.memberId } })
+    }
   } catch(error) {
     failure(res,error)
   }
