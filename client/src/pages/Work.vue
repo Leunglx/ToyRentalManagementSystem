@@ -155,11 +155,23 @@ const validateId = (rule, value, callback) => {
     callback(new Error('必须为一个正整数！'))
   }
 }
+// 时间校验规则
+const validateEndTime = (rule, value, callback) => {
+  if (new Date(form.startTime).getTime() > new Date(form.endTime).getTime()) {
+    callback(new Error('结束时间不能早于开始时间！'))
+  } else callback()
+}
 // 表单校验规则
 const rules = reactive({
-  clerkId: { required: true, message: '请输入营业员id', trigger: 'blur' },
+  clerkId: [
+    { required: true, message: '请输入营业员id', trigger: 'blur' },
+    { validator: validateId, trigger: 'change' }
+  ],
   startTime: { type: 'datetime', required: true, message: '请选择开始时间', trigger: 'blur' },
-  endTime: { type: 'datetime', required: true, message: '请选择结束时间', trigger: 'blur' },
+  endTime: [
+    { type: 'datetime', required: true, message: '请选择结束时间', trigger: 'blur' },
+    { validator: validateEndTime, trigger: 'change' }
+  ],
 })
 
 // 分页用到的数据

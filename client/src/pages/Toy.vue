@@ -2,7 +2,7 @@
   <div class="bg">
     <!-- 顶部按钮 -->
     <div class="top-btn">
-      <el-button type="primary" plain @click="centerDialogVisible = true; formTitile = '玩具录入'">玩具录入</el-button>
+      <el-button type="primary" plain @click="centerDialogVisible = true; formTitile = '玩具录入'; isEditing = false">玩具录入</el-button>
       <el-popconfirm
         title="确认删除吗?此操作不可逆"
         confirm-button-text="是"
@@ -40,7 +40,7 @@
         <el-form-item label="附件数量" prop="attachmentNum">
           <el-input v-model="form.attachmentNum" />
         </el-form-item>
-        <el-form-item label="购入日期" prop="purchaseDate">
+        <el-form-item label="进货时间" prop="purchaseDate">
           <el-date-picker
             v-model="form.purchaseDate"
             type="date"
@@ -49,12 +49,12 @@
             style="width: 100%"
           />
         </el-form-item>
-        <!-- <el-form-item label="是否已出租" prop="isRented">
+        <el-form-item label="是否已出租" prop="isRented">
           <el-radio-group v-model="form.isRented">
-            <el-radio :value="0">否</el-radio>
-            <el-radio :value="1">是</el-radio>
+            <el-radio :value="0" :disabled="isEditing">否</el-radio>
+            <el-radio :value="1" :disabled="isEditing">是</el-radio>
           </el-radio-group>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="损坏情况" prop="damageCondition">
           <el-input v-model="form.damageCondition" type="textarea" maxlength="100" :rows="4" show-word-limit resize="none" />
         </el-form-item>
@@ -82,7 +82,7 @@
       <el-table-column align="center" label="玩具" prop="tname" />
       <el-table-column align="center" label="价格" prop="price" />
       <el-table-column align="center" label="附件数量" prop="attachmentNum" />
-      <el-table-column align="center" label="进货日期" prop="purchaseDate" />
+      <el-table-column align="center" label="进货时间" prop="purchaseDate" />
       <el-table-column align="center" label="是否出租" prop="isRented" :formatter="playbackFormat" />
       <el-table-column align="center" label="损坏情况" prop="damageCondition" show-overflow-tooltip />
       <el-table-column align="right">
@@ -141,6 +141,9 @@ const centerDialogVisible = ref(false)
 const multipleTableRef = ref()
 const multipleSelection = ref([])
 const formTitile = ref('玩具录入')
+// 是否正在修改表单
+const isEditing = ref(false)
+
 // 暂时存放玩具id 用于更新
 let tempId = 0
 
@@ -172,6 +175,12 @@ const validatePrice = (rule, value, callback) => {
     callback(new Error('必须为一个正整数！'))
   }
 }
+// 时间校验规则
+const validateTime = (rule, value, callback) => {
+  if (new Date(form.purchaseDate).getTime() > Date.now()) {
+    callback(new Error('进货时间不能超过当前日期！'))
+  } else callback()
+}
 // 表单校验规则
 const rules = reactive({
   tname: { required: true, message: '请输入玩具名', trigger: 'blur' },
@@ -183,7 +192,10 @@ const rules = reactive({
     { required: true, message: '请输入附件数量', trigger: 'blur' },
     { validator: validateattachmentNum, trigger: 'blur' }
   ],
-  purchaseDate: { type: 'date', required: true, message: '请选择购入日期', trigger: 'blur' },
+  purchaseDate: [
+    { type: 'date', required: true, message: '请选择进货时间', trigger: 'blur' },
+    { validator: validateTime, trigger: 'change' }
+  ],
   isRented: { required: true, message: '请选择租借情况', trigger: 'change' }
 })
 
@@ -305,6 +317,8 @@ const handleEdit = (index, row) => {
     })
 
   formTitile.value = '更新玩具信息'
+  // 禁用是否出租单选框
+  isEditing.value = true
   centerDialogVisible.value = true
 }
 

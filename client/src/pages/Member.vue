@@ -151,13 +151,22 @@ const validateDeposit = (rule, value, callback) => {
     callback(new Error('必须为一个正整数或0！'))
   }
 }
+// 时间校验规则
+const validateTime = (rule, value, callback) => {
+  if (new Date(form.registerTime).getTime() > Date.now()) {
+    callback(new Error('注册时间不能超过当前日期！'))
+  } else callback()
+}
 // 表单校验规则
 const rules = reactive({
   mname: { required: true, message: '请输入会员名', trigger: 'blur' },
   tel: [
     { required: true, message: '请输入联系方式', trigger: 'blur' }
   ],
-  registerTime: { type: 'date', required: true, message: '请选择会员注册时间', trigger: 'blur' },
+  registerTime: [
+    { type: 'date', required: true, message: '请选择会员注册时间', trigger: 'blur' },
+    { validator: validateTime, trigger: 'change' }
+  ],
   deposit: [
     { required: true, message: '请输入押金', trigger: 'blur' },
     { validator: validateDeposit, trigger: 'change' }

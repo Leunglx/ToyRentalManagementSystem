@@ -2,7 +2,7 @@
   <div class="bg">
     <!-- 顶部按钮 -->
     <div class="top-btn">
-      <el-button type="primary" plain @click="centerDialogVisible = true; formTitile = '玩具出租信息录入'">玩具出租信息录入</el-button>
+      <el-button type="primary" plain @click="centerDialogVisible = true; formTitile = '玩具出租信息录入'; isEditing = false">玩具出租信息录入</el-button>
       <el-popconfirm
         title="确认删除吗?此操作不可逆"
         confirm-button-text="是"
@@ -31,15 +31,15 @@
         :rules="rules"
         label-width="auto"
       >
-        <!-- <el-form-item label="玩具id" prop="toyId">
-          <el-input v-model="form.toyId" />
+        <el-form-item label="玩具id" prop="toyId">
+          <el-input v-model="form.toyId" :disabled="isEditing" />
         </el-form-item>
         <el-form-item label="会员id" prop="memberId">
-          <el-input v-model="form.memberId" />
+          <el-input v-model="form.memberId" :disabled="isEditing" />
         </el-form-item>
         <el-form-item label="营业员id" prop="clerkId">
-          <el-input v-model="form.clerkId" />
-        </el-form-item> -->
+          <el-input v-model="form.clerkId" :disabled="isEditing" />
+        </el-form-item>
         <el-form-item label="出租日期" prop="rentDate">
           <el-date-picker
             v-model="form.rentDate"
@@ -140,6 +140,9 @@ const centerDialogVisible = ref(false)
 const multipleTableRef = ref()
 const multipleSelection = ref([])
 const formTitile = ref('玩具出租信息录入')
+// 表单是否正在修改
+const isEditing = ref()
+
 // 暂时存放玩具出租信息id 用于更新
 let tempId = 0
 
@@ -162,6 +165,19 @@ const validateId = (rule, value, callback) => {
     callback(new Error('必须为一个正整数！'))
   }
 }
+// 时间校验规则
+const validateRentDate = (rule, value, callback) => {
+  if (new Date(form.rentDate).getTime() > Date.now()) {
+    callback(new Error('出租日期不能超过当前日期！'))
+  } else callback()
+}
+const validateReturnDate = (rule, value, callback) => {
+  if (new Date(form.returnDate).getTime() > Date.now()) {
+    callback(new Error('归还日期不能超过当前日期！'))
+  } else if (new Date(form.rentDate).getTime() > new Date(form.returnDate).getTime()) {
+    callback(new Error('归还日期不能早于出租日期！'))
+  } else callback()
+}
 // 表单校验规则
 const rules = reactive({
   toyId: [
@@ -176,7 +192,13 @@ const rules = reactive({
     { required: true, message: '请输入营业员id', trigger: 'blur' },
     { validator: validateId, trigger: 'change' }
   ],
-  rentDate: { type: 'date', required: true, message: '请选择出租日期', trigger: 'blur' },
+  rentDate: [
+    { type: 'date', required: true, message: '请选择出租日期', trigger: 'blur' },
+    { validator: validateRentDate, trigger: 'change' }
+  ],
+  returnDate: [
+    { validator: validateReturnDate, trigger: 'change' }
+  ],
 })
 
 // 分页用到的数据
@@ -296,6 +318,8 @@ const handleEdit = (index, row) => {
     })
 
   formTitile.value = '更新玩具出租信息'
+  // 禁用id输入框
+  isEditing.value = true
   centerDialogVisible.value = true
 }
 
