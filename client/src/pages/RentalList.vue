@@ -325,6 +325,10 @@ const handleEdit = (index, row) => {
 
 // 点击删除玩具出租信息按钮
 const handleDelete = async (index, row) => {
+  if (row.returnDate === 'Invalid date') {
+    $Tools.showMessage('玩具仍在出租，不能删除', 'warning')
+    return
+  }
   await deleteRentalList(row.id)
   // 重新查询
   await getRentalListList({ toyId: '', memberId:'', clerkId: '', currentPage: state.currentPage, pageSize: state.pageSize})
