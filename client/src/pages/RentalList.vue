@@ -172,9 +172,9 @@ const validateRentDate = (rule, value, callback) => {
   } else callback()
 }
 const validateReturnDate = (rule, value, callback) => {
-  if (new Date(form.returnDate).getTime() > Date.now()) {
+  if (form.returnDate && new Date(form.returnDate).getTime() > Date.now()) {
     callback(new Error('归还日期不能超过当前日期！'))
-  } else if (new Date(form.rentDate).getTime() > new Date(form.returnDate).getTime()) {
+  } else if (form.returnDate && new Date(form.rentDate).getTime() > new Date(form.returnDate).getTime()) {
     callback(new Error('归还日期不能早于出租日期！'))
   } else callback()
 }
